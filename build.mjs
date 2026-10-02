@@ -5,7 +5,9 @@ const password = process.env.TRIP_PAGE_PASSWORD;
 if (!password) throw new Error('Set TRIP_PAGE_PASSWORD before building.');
 
 const escapeHtml = (s) => s.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
-const inline = (s) => escapeHtml(s).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+const inline = (s) => escapeHtml(s)
+  .replace(/\[([^\]]+)\]\((https:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 const source = readFileSync('2026-10-日本新加坡土耳其行程.md', 'utf8');
 const ticket = readFileSync('2026-10-13-品川至博多新干线车票.png').toString('base64');
 const lines = source.split(/\r?\n/);
